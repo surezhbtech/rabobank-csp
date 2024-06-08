@@ -4,6 +4,9 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { getStatement, validateStatement } from './server/statement-processor';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -17,13 +20,23 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
+  server.use(cors());
+  server.post('/upload', bodyParser.text(), function (req, res) {
+    const response = JSON.parse(req.body);
+    console.log('upload body: Started');
+    console.log(response);
+    console.log(validateStatement(response));
+    res.send(validateStatement(response));
+  });
+
   // Serve static files from /browser
-  server.get('**', express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html',
-  }));
+  server.get(
+    '**',
+    express.static(browserDistFolder, {
+      maxAge: '1y',
+      index: 'index.html',
+    }),
+  );
 
   // All regular routes use the Angular engine
   server.get('**', (req, res, next) => {
@@ -38,7 +51,9 @@ export function app(): express.Express {
         providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
       })
       .then((html) => res.send(html))
-      .catch((err) => next(err));
+      .catch((err) => {
+        next(err);
+      });
   });
 
   return server;

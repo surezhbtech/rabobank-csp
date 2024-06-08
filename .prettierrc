@@ -1,0 +1,26 @@
+{
+  "printWidth": 140,
+  "singleQuote": true,
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "printWidth": 130,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "none",
+        "bracketSpacing": true,
+        "arrowParens": "avoid",
+        "parser": "angular"
+      }
+    },
+    {
+      "files": "*.(yml|yaml)",
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
+}
