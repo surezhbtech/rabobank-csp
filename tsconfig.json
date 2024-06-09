@@ -26,6 +26,7 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "esModuleInterop": true
   }
 }
