@@ -13,5 +13,5 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'rabobank-csp';
+  title = 'Customer Statement Processor';
 }

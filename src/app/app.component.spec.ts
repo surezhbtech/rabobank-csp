@@ -17,13 +17,13 @@ describe('AppComponent', () => {
   it(`should have the 'rabobank-csp' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('rabobank-csp');
+    expect(app.title).toEqual('Customer Statement Processor');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, rabobank-csp');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Customer Statement Processor');
   });
 });
