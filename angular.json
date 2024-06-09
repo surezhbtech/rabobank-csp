@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": ["csvtojson", "fast-xml-parser", "body-parser"],
             "outputPath": "dist/rabobank-csp",
             "index": "src/index.html",
             "browser": "src/main.ts",

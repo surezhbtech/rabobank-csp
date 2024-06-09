@@ -1,6 +1,7 @@
 <div class="app-layout">
-  <button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
-  <input hidden (change)="onFileSelected()" #fileInput type="file" id="file" accept=".xml" />
+  <h3>Upload the customer statement records:</h3>
+  <button type="button" mat-raised-button (click)="fileInput.click()">Upload File</button>
+  <input hidden (change)="onFileSelected()" #fileInput type="file" id="file" accept=".xml,.csv" />
 
   <app-report></app-report>
 </div>

@@ -7,11 +7,14 @@ import { Subject, takeUntil } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 import { ReportComponent } from '../report/report.component';
 import { RecordMT940 } from '../app.types';
+import { MatProgressBar } from '@angular/material/progress-bar';
+
+import csv from 'csvtojson';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [MatButton, ReportComponent],
+  imports: [MatButton, ReportComponent, MatProgressBar],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
@@ -27,24 +30,46 @@ export class LayoutComponent implements OnDestroy {
   }
 
   onFileSelected() {
-    const inputNode: any = document.querySelector('#file');
+    const inputNode: HTMLInputElement = document.querySelector('#file') as HTMLInputElement;
     if (typeof FileReader !== 'undefined' && inputNode) {
+      const files = inputNode.files as FileList;
+      const fileExtension = files[0]?.name.split('.').pop();
       const reader = new FileReader();
-      reader.readAsArrayBuffer(inputNode.files[0]);
-
-      reader.onloadend = (fileEvent: any) => {
-        const uploadContent = new TextDecoder().decode(fileEvent.target.result);
-
-        this.statementProcessorService
-          .validateStatementData(JSON.stringify(this.xmlParser.parse(uploadContent)))
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((httpEvent) => {
-            if (httpEvent.type === HttpEventType.Response) {
-              this.statementProcessorService.recordMT940Communicator.next(httpEvent.body as RecordMT940[]);
-            }
-          });
+      reader.readAsArrayBuffer(files[0]);
+      reader.onloadend = (fileEvent) => {
+        this.parseDataAndSendToCommunicator(fileEvent, fileExtension);
       };
     }
+  }
+
+  parseDataAndSendToCommunicator(fileEvent: ProgressEvent<FileReader>, fileExtension: string | undefined): void {
+    if (fileEvent.target && fileExtension) {
+      const resultContent = fileEvent.target.result as AllowSharedBufferSource;
+      const uploadContent = new TextDecoder().decode(resultContent);
+      if (fileExtension === 'xml') {
+        this.sendDataToCommunicator(JSON.stringify(this.xmlParser.parse(uploadContent)));
+      } else {
+        csv({
+          noheader: false,
+          headers: ['reference', 'accountNumber', 'description', 'startBalance', 'mutation', 'endBalance'],
+        })
+          .fromString(uploadContent)
+          .then((jsonContent: RecordMT940[]) => {
+            this.sendDataToCommunicator(JSON.stringify(jsonContent));
+          });
+      }
+    }
+  }
+
+  sendDataToCommunicator(content: string): void {
+    this.statementProcessorService
+      .validateStatementData(content)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((httpEvent) => {
+        if (httpEvent.type === HttpEventType.Response) {
+          this.statementProcessorService.recordMT940Communicator.next(httpEvent.body as RecordMT940[]);
+        }
+      });
   }
 
   ngOnDestroy() {

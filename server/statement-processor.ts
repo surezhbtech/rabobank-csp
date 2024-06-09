@@ -1,7 +1,11 @@
 import { ProcessRecord, RecordMT940, Statement } from './processor.types';
 
-export function getStatement(response: Statement) {
-  return response.records.record;
+export function getStatement(response: Statement | RecordMT940[]) {
+  if ('records' in response) {
+    return response.records.record;
+  } else {
+    return response;
+  }
 }
 
 export function validateStatement(response: Statement): RecordMT940[] {
