@@ -26,23 +26,23 @@ function checkRecordsHasUniqueReference(records: RecordMT940[]) {
           : [ProcessRecord.RECORD_HAS_DUPLICATE_REFERENCE],
       };
     }
-    record.isValid = true;
-    return record;
+    return {
+      ...record,
+      isValid: true, // set valid true for all records
+    };
   });
 }
 
 function checkRecordHasCorrectBalance(record: RecordMT940): RecordMT940 {
-  if (record.isValid) {
-    const endBalance: number = fixNumberTwoDecimalPoints(record.startBalance) + fixNumberTwoDecimalPoints(record.mutation);
-    if (fixNumberTwoDecimalPoints(endBalance) !== Number(record.endBalance)) {
-      return {
-        ...record,
-        isValid: false,
-        validationErrors: record.validationErrors
-          ? [ProcessRecord.RECORD_HAS_INCORRECT_BALANCE, ...record.validationErrors]
-          : [ProcessRecord.RECORD_HAS_INCORRECT_BALANCE],
-      };
-    }
+  const endBalance: number = fixNumberTwoDecimalPoints(record.startBalance) + fixNumberTwoDecimalPoints(record.mutation);
+  if (fixNumberTwoDecimalPoints(endBalance) !== Number(record.endBalance)) {
+    return {
+      ...record,
+      isValid: false,
+      validationErrors: record.validationErrors
+        ? [ProcessRecord.RECORD_HAS_INCORRECT_BALANCE, ...record.validationErrors]
+        : [ProcessRecord.RECORD_HAS_INCORRECT_BALANCE],
+    };
   }
   return record;
 }

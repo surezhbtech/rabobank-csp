@@ -39,7 +39,7 @@ export class LayoutComponent implements OnDestroy {
           .validateStatementData(JSON.stringify(this.xmlParser.parse(uploadContent)))
           .pipe(takeUntil(this.destroy$))
           .subscribe((httpEvent) => {
-            if(httpEvent.type === HttpEventType.Response) {
+            if (httpEvent.type === HttpEventType.Response) {
               this.statementProcessorService.recordMT940Communicator.next(httpEvent.body as RecordMT940[]);
             }
           });

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -15,6 +15,7 @@ import {
 import { RecordMT940 } from '../app.types';
 import { catchError, EMPTY, Observable, Subject, takeUntil } from 'rxjs';
 import { StatementProcessorService } from '../services/statement-processor.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-report',
@@ -31,20 +32,26 @@ import { StatementProcessorService } from '../services/statement-processor.servi
     MatCellDef,
     MatHeaderRowDef,
     MatRowDef,
+    NgClass,
   ],
   templateUrl: './report.component.html',
   styleUrl: './report.component.scss',
 })
 export class ReportComponent implements OnDestroy {
-  public displayedColumns: string[] = ['reference', 'accountNumber', 'startBalance', 'mutation', 'endBalance', 'description'];
+  public displayedColumns: string[] = [
+    'reference',
+    'accountNumber',
+    'startBalance',
+    'mutation',
+    'endBalance',
+    'description',
+    'validationErrors',
+  ];
   public dataSource: Observable<RecordMT940[]>;
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private statementProcessorService: StatementProcessorService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {
+  constructor(private statementProcessorService: StatementProcessorService) {
     this.dataSource = this.statementProcessorService.recordMT940Communicator.pipe(
       takeUntil(this.destroy$),
       catchError((error) => {

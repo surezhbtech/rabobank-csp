@@ -13,7 +13,7 @@ export interface Records {
 }
 
 export interface Statement {
-  records: Records
+  records: Records;
 }
 
 export enum ProcessRecord {
