@@ -8,10 +8,10 @@ import { RecordMT940 } from '../app.types';
 })
 export class StatementProcessorService {
   public recordMT940Communicator: BehaviorSubject<RecordMT940[]> = new BehaviorSubject<RecordMT940[]>([]);
-  private http: HttpClient = inject(HttpClient);
+  private httpClient: HttpClient = inject(HttpClient);
 
   validateStatementData(data: string) {
-    return this.http.post('/upload', data, {
+    return this.httpClient.post('/upload', data, {
       reportProgress: true,
       observe: 'events',
     });

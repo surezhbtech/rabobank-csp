@@ -3,4 +3,34 @@
   box-sizing: border-box;
   margin: 0 auto;
   max-width: 1080px;
+  &__dragdroparea {
+    text-align: center;
+    margin: 0 0 32px 0;
+  }
+  h2 {
+    font-style: italic;
+    font-family: Myriad, 'Segoe UI', 'Helvetica Neue', Arial, Sans-serif, serif !important;
+    color: #0059ff;
+    font-size: 1.8rem;
+  }
+}
+
+.error {
+  color: #f00;
+}
+
+.drag {
+  font-size: 1.2rem;
+  border: 3px solid #bbb;
+  padding: 1.5rem;
+  background-color: #fff;
+  color: #bbb;
+}
+
+.drop {
+  font-size: 1.2rem;
+  border: 3px dashed #bbb;
+  padding: 1.5rem;
+  background-color: #eff;
+  color: #aaa;
 }

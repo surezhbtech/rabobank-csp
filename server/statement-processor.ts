@@ -8,7 +8,7 @@ export function getStatement(response: Statement | RecordMT940[]) {
   }
 }
 
-export function validateStatement(response: Statement): RecordMT940[] {
+export function validateStatement(response: Statement | RecordMT940[]): RecordMT940[] {
   const statement: RecordMT940[] = getStatement(response);
   const uniqueStatement: RecordMT940[] = checkRecordsHasUniqueReference(statement);
   return uniqueStatement.map((record: RecordMT940) => {
@@ -69,14 +69,20 @@ function checkRecordForValidNumber(record: RecordMT940): RecordMT940 {
   }
 }
 
-function convertToNumber(number: number): number | string {
-  if (isNaN(number)) {
+function convertToNumber(number: number | string): number | string {
+  if (isNaN(number as number)) {
     return ProcessRecord.INVALID_NUMBER;
   } else {
     return fixNumberTwoDecimalPoints(number);
   }
 }
 
-function fixNumberTwoDecimalPoints(number: number): number {
+function fixNumberTwoDecimalPoints(number: number | string): number {
   return Number(Number(number).toFixed(2));
 }
+
+export const StatementProcessorTest = {
+  checkRecordsHasUniqueReference,
+  checkRecordHasCorrectBalance,
+  checkRecordForValidNumber,
+};

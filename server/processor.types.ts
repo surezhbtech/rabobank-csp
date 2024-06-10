@@ -1,10 +1,10 @@
 export interface RecordMT940 {
   reference: string;
   accountNumber: string;
-  startBalance: number;
-  mutation: number;
+  startBalance: number | string;
+  mutation: number | string;
   description: string;
-  endBalance: number;
+  endBalance: number | string;
   isValid?: boolean;
   validationErrors?: string[];
 }

@@ -1,7 +1,13 @@
 <div class="app-layout">
-  <h3>Upload the customer statement records:</h3>
-  <button type="button" mat-raised-button (click)="fileInput.click()">Upload File</button>
-  <input hidden (change)="onFileSelected()" #fileInput type="file" id="file" accept=".xml,.csv" />
+  <h2>{{ uploadLabel }}:</h2>
 
-  <app-report></app-report>
+  <div class="error" *ngIf="error">{{ error }}</div>
+  <div draggable="true" class="app-layout__dragdroparea" ngClass="{{ dragAreaClass }}">
+    Drag & Drop to Upload File or
+    <button type="button" mat-raised-button (click)="fileInput.click()">{{ uploadButton }}</button>
+    <input hidden (change)="onFileSelected($event)" [multiple]="false" #fileInput type="file" id="file" accept=".xml,.csv" />
+  </div>
+
+  <app-skeleton *ngIf="isDataLoading"></app-skeleton>
+  <app-report *ngIf="!isDataLoading"></app-report>
 </div>
