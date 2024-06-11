@@ -78,7 +78,7 @@ export class LayoutComponent implements OnDestroy {
       this.error = undefined;
       const reader = new FileReader();
       const fileExtension = files[0]?.name.split('.').pop();
-      if (!files[0]) {
+      if (files?.[0]) {
         reader.readAsArrayBuffer(files[0] as Blob);
         reader.onloadend = async (fileEvent) => {
           if (fileEvent.target && fileExtension) {
