@@ -8,6 +8,11 @@
     <input hidden (change)="onFileSelected($event)" [multiple]="false" #fileInput type="file" id="file" accept=".xml,.csv" />
   </div>
 
+  <div class="app-layout__button-mobile">
+    <button type="button" mat-raised-button (click)="fileInput.click()">{{ uploadButton }}</button>
+    <input hidden (change)="onFileSelected($event)" [multiple]="false" #fileInput type="file" accept=".xml,.csv" />
+  </div>
+
   <app-skeleton *ngIf="isDataLoading"></app-skeleton>
   <app-report *ngIf="!isDataLoading"></app-report>
 </div>

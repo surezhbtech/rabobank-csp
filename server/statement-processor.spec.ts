@@ -1,15 +1,6 @@
-import { getStatement, StatementProcessorTest, validateStatement } from './statement-processor';
+import { StatementProcessorTest, validateStatement } from './statement-processor';
 import { CSV_DATA, PROCESSED_CSV_DATA, PROCESSED_XML_DATA, XML_DATA } from '../mocks/statement';
-import { ProcessRecord } from './processor.types';
-
-describe('getStatement()', () => {
-  it('returns the statement', () => {
-    expect(getStatement(XML_DATA)).toEqual(XML_DATA.records.record);
-  });
-  it('returns the statement', () => {
-    expect(getStatement(CSV_DATA)).toEqual(CSV_DATA);
-  });
-});
+import { ProcessRecord, Statement } from './processor.types';
 
 describe('validateStatement()', () => {
   it('Should validate XML and process data', () => {
@@ -17,6 +8,12 @@ describe('validateStatement()', () => {
   });
   it('Should validate CSV and process data', () => {
     expect(validateStatement(CSV_DATA)).toMatchObject(PROCESSED_CSV_DATA);
+  });
+  it('should return Invalid xml file format', () => {
+    expect(validateStatement({} as Statement)).toEqual({ message: ProcessRecord.INVALID_MT940 });
+  });
+  it('should return Invalid csv file format', () => {
+    expect(validateStatement([])).toEqual({ message: ProcessRecord.INVALID_MT940 });
   });
 });
 

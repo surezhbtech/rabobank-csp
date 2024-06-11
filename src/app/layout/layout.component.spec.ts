@@ -5,6 +5,16 @@ import { createHttpFactory, HttpMethod, Spectator, SpectatorHttp } from '@ngneat
 import { createComponentFactory } from '@ngneat/spectator/jest';
 import { StatementProcessorService } from '../services/statement-processor.service';
 import { TextEncoder, TextDecoder } from 'util';
+import { fakeAsync, flush } from '@angular/core/testing';
+import {
+  CSV_DATA,
+  httpInvalidResponse,
+  httpNoBodyResponse,
+  httpResponse,
+  INVALID_XML_DATA,
+  PROCESSED_CSV_DATA,
+} from '../../../mocks/statement';
+import { of } from 'rxjs';
 
 global.TextEncoder = TextEncoder;
 // @ts-expect-error get TextDecoder from global
@@ -46,15 +56,16 @@ describe('LayoutComponent', () => {
     expect(spectator.component.onFileSelected).toHaveBeenCalled();
   });
 
-  it('should call parseDataAndSendToCommunicator and parse xml', async () => {
-    jest.spyOn(spectator.component, 'sendDataToCommunicator');
-    await spectator.component.parseDataAndSendToCommunicator(new ArrayBuffer(16), 'xml');
-    expect(spectator.component.sendDataToCommunicator).toHaveBeenCalled();
-    spectatorService.expectOne('/upload', HttpMethod.POST);
-    spectatorService.service.recordMT940Communicator.subscribe((data) => {
-      expect(data).toBeTruthy();
+  it('should call sendDataToCommunicator and parse xml', fakeAsync(() => {
+    jest.spyOn(spectatorService.service, 'validateStatementData').mockReturnValue(of(httpResponse));
+    const next = jest.spyOn(spectatorService.service.recordMT940Communicator, 'next');
+    const contentData = JSON.stringify(CSV_DATA);
+    spectator.component.sendDataToCommunicator(contentData);
+    spectatorService.service.validateStatementData(contentData).subscribe(() => {
+      expect(next).toHaveBeenCalledWith(PROCESSED_CSV_DATA);
     });
-  });
+    flush();
+  }));
 
   it('should call parseDataAndSendToCommunicator and parse csv', async () => {
     jest.spyOn(spectator.component, 'processCSV');
@@ -62,4 +73,31 @@ describe('LayoutComponent', () => {
     expect(spectator.component.processCSV).toHaveBeenCalled();
     spectatorService.expectOne('/upload', HttpMethod.POST);
   });
+
+  it('should call parseDataAndSendToCommunicator and parse xml', async () => {
+    jest.spyOn(spectator.component, 'processXML');
+    await spectator.component.parseDataAndSendToCommunicator(new ArrayBuffer(16), 'xml');
+    expect(spectator.component.processXML).toHaveBeenCalled();
+    spectatorService.expectOne('/upload', HttpMethod.POST);
+  });
+
+  it('should call sendDataToCommunicator with invalid xml', fakeAsync(() => {
+    jest.spyOn(spectatorService.service, 'validateStatementData').mockReturnValue(of(httpInvalidResponse));
+    const contentData = JSON.stringify(INVALID_XML_DATA);
+    spectator.component.sendDataToCommunicator(contentData);
+    spectatorService.service.validateStatementData(contentData).subscribe(() => {
+      expect(spectator.component.error).toBe('Invalid File Format');
+    });
+    flush();
+  }));
+
+  it('should call sendDataToCommunicator with invalid xml', fakeAsync(() => {
+    jest.spyOn(spectatorService.service, 'validateStatementData').mockReturnValue(of(httpNoBodyResponse));
+    const contentData = JSON.stringify(INVALID_XML_DATA);
+    spectator.component.sendDataToCommunicator(contentData);
+    spectatorService.service.validateStatementData(contentData).subscribe(() => {
+      expect(spectator.component.error).toEqual('Invalid file format MT940');
+    });
+    flush();
+  }));
 });

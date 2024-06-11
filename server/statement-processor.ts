@@ -1,16 +1,27 @@
 import { ProcessRecord, RecordMT940, Statement } from './processor.types';
 
-export function getStatement(response: Statement | RecordMT940[]) {
+export function validateStatement(response: Statement | RecordMT940[]) {
   if ('records' in response) {
-    return response.records.record;
+    return processRecords(response.records.record);
+  }
+  if (Array.isArray(response)) {
+    const [record] = response;
+    if (record && 'reference' in record) {
+      return processRecords(response);
+    } else {
+      return {
+        message: ProcessRecord.INVALID_MT940,
+      };
+    }
   } else {
-    return response;
+    return {
+      message: ProcessRecord.INVALID_MT940,
+    };
   }
 }
 
-export function validateStatement(response: Statement | RecordMT940[]): RecordMT940[] {
-  const statement: RecordMT940[] = getStatement(response);
-  const uniqueStatement: RecordMT940[] = checkRecordsHasUniqueReference(statement);
+export function processRecords(response: RecordMT940[]): RecordMT940[] {
+  const uniqueStatement: RecordMT940[] = checkRecordsHasUniqueReference(response);
   return uniqueStatement.map((record: RecordMT940) => {
     const processedRecord = checkRecordForValidNumber(record);
     return checkRecordHasCorrectBalance(processedRecord);

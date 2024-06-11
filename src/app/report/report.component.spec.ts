@@ -5,7 +5,6 @@ import { createHttpFactory, Spectator } from '@ngneat/spectator';
 import { createComponentFactory } from '@ngneat/spectator/jest';
 import { StatementProcessorService } from '../services/statement-processor.service';
 import { PROCESSED_XML_DATA } from '../../../mocks/statement';
-import { of } from 'rxjs';
 
 describe('ReportComponent', () => {
   let spectator: Spectator<ReportComponent>;
@@ -25,7 +24,7 @@ describe('ReportComponent', () => {
   });
 
   it('should create table and populate data', () => {
-    spectator.component.dataSource = of(PROCESSED_XML_DATA);
+    spectator.component.dataSource = PROCESSED_XML_DATA;
     spectator.detectChanges();
     const tableRows = spectator.queryAll('tr');
     const headerRow = tableRows[0];

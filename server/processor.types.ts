@@ -20,5 +20,6 @@ export enum ProcessRecord {
   INVALID_NUMBER = 'Invalid number',
   RECORD_HAS_DUPLICATE_REFERENCE = 'Record has duplicate reference',
   RECORD_HAS_INVALID_NUMBER = 'Record has invalid number',
-  RECORD_HAS_INCORRECT_BALANCE = 'Record Has incorrect BALANCE',
+  RECORD_HAS_INCORRECT_BALANCE = 'Record has incorrect balance',
+  INVALID_MT940 = 'Invalid MT940 file',
 }

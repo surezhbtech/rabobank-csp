@@ -2,16 +2,25 @@
   display: block;
   box-sizing: border-box;
   margin: 0 auto;
+  top: 100px;
+  position: relative;
   max-width: 1080px;
   &__dragdroparea {
     text-align: center;
     margin: 0 0 32px 0;
   }
+  &__button-mobile {
+    display: none;
+  }
   h2 {
     font-style: italic;
     font-family: Myriad, 'Segoe UI', 'Helvetica Neue', Arial, Sans-serif, serif !important;
     color: #0059ff;
-    font-size: 1.8rem;
+    font-size: 38px;
+    margin: 48px 0 24px 0;
+  }
+  button {
+    margin: 0 4px;
   }
 }
 
@@ -21,7 +30,8 @@
 
 .drag {
   font-size: 1.2rem;
-  border: 3px solid #bbb;
+  font-weight: lighter;
+  border: 2px solid #f0f0f0;
   padding: 1.5rem;
   background-color: #fff;
   color: #bbb;
@@ -29,8 +39,26 @@
 
 .drop {
   font-size: 1.2rem;
-  border: 3px dashed #bbb;
+  font-weight: lighter;
+  border: 1px solid #36b065;
   padding: 1.5rem;
-  background-color: #eff;
-  color: #aaa;
+  background-color: #eff9f3;
+  color: #212224;
+}
+
+@media only screen and (max-width: 600px) {
+  .app-layout {
+    &__dragdroparea {
+      display: none;
+    }
+    &__button-mobile {
+      text-align: center;
+      margin: 0 0 32px 0;
+      display: block;
+    }
+    h2 {
+      margin: 48px 16px 24px;
+      font-size: 30px;
+    }
+  }
 }

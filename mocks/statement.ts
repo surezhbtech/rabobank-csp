@@ -212,7 +212,7 @@ export const PROCESSED_XML_DATA: RecordMT940[] = [
     endBalance: 6368,
     reference: '189177',
     isValid: false,
-    validationErrors: ['Record Has incorrect BALANCE', 'Record has duplicate reference'],
+    validationErrors: ['Record has incorrect balance', 'Record has duplicate reference'],
   },
   {
     accountNumber: 'NL27SNSB0917829871',
@@ -232,7 +232,7 @@ export const PROCESSED_XML_DATA: RecordMT940[] = [
     endBalance: 6368,
     reference: '189177',
     isValid: false,
-    validationErrors: ['Record Has incorrect BALANCE', 'Record has duplicate reference'],
+    validationErrors: ['Record has incorrect balance', 'Record has duplicate reference'],
   },
   {
     accountNumber: 'NL69ABNA0433647324',
@@ -297,7 +297,7 @@ export const PROCESSED_XML_DATA: RecordMT940[] = [
     endBalance: 4981,
     reference: '163215',
     isValid: false,
-    validationErrors: ['Record Has incorrect BALANCE'],
+    validationErrors: ['Record has incorrect balance'],
   },
   {
     accountNumber: 'NL56RABO0149876948',
@@ -423,3 +423,147 @@ export const XML_DATA_STRING =
 //@typescript-eslint/non-nullable-type-assertion-style
 export const CSV_DATA_STRING =
   '[{"reference":"156108","accountNumber":"NL69ABNA0433647324","description":"Flowers from Erik de Vries","startBalance":"13.92","mutation":"-7.25","endBalance":"6.67"},{"reference":"112806","accountNumber":"NL93ABNA0585619023","description":"Subscription from Rik Theu�","startBalance":"77.29","mutation":"-23.99","endBalance":"53.3"},{"reference":"181631","accountNumber":"NL27SNSB0917829871","description":"Tickets for Jan King","startBalance":"60.83","mutation":"+41.96","endBalance":"102.79"},{"reference":"147132","accountNumber":"NL56RABO0149876948","description":"Subscription for Richard Dekker","startBalance":"103.65","mutation":"+2.58","endBalance":"106.23"},{"reference":"112806","accountNumber":"NL91RABO0315273637","description":"Candy for Willem Theu�","startBalance":"52.21","mutation":"-33.21","endBalance":"19"},{"reference":"112806","accountNumber":"NL27SNSB0917829871","description":"Flowers from Erik de Vries","startBalance":"39.9","mutation":"-42.57","endBalance":"-2.67"},{"reference":"134902","accountNumber":"NL90ABNA0585647886","description":"Clothes for Willem de Vries","startBalance":"22.2","mutation":"+33.21","endBalance":"55.41"},{"reference":"136329","accountNumber":"NL93ABNA0585619023","description":"Clothes from Dani�l Bakker","startBalance":"81.7","mutation":"-43.41","endBalance":"38.29"},{"reference":"187928","accountNumber":"NL43AEGO0773393871","description":"Flowers from Richard Theu�","startBalance":"101.01","mutation":"-30.45","endBalance":"70.56"},{"reference":"163434","accountNumber":"NL90ABNA0585647886","description":"Flowers from Jan de Vries","startBalance":"71.87","mutation":"-16.05","endBalance":"55.82"}]';
+
+export const INVALID_XML_DATA = {
+  Reference_number: 'NL93ABNA0585647886',
+};
+
+export const INVALID_CSV_DATA = [
+  {
+    Reference_number: 'NL93ABNA0585647886',
+  },
+];
+
+export const httpInvalidResponse = {
+  headers: {
+    normalizedNames: {},
+    lazyUpdate: null,
+    headers: {},
+  },
+  status: 200,
+  statusText: 'OK',
+  url: 'http://localhost/upload',
+  ok: true,
+  type: 4,
+  body: { message: 'Invalid File Format' },
+};
+
+export const httpNoBodyResponse = {
+  headers: {
+    normalizedNames: {},
+    lazyUpdate: null,
+    headers: {},
+  },
+  status: 200,
+  statusText: 'OK',
+  url: 'http://localhost/upload',
+  ok: true,
+  type: 4,
+};
+export const httpResponse = {
+  headers: {
+    normalizedNames: {},
+    lazyUpdate: null,
+    headers: {},
+  },
+  status: 200,
+  statusText: 'OK',
+  url: 'http://localhost/upload',
+  ok: true,
+  type: 4,
+  body: [
+    {
+      reference: '156108',
+      accountNumber: 'NL69ABNA0433647324',
+      description: 'Flowers from Erik de Vries',
+      startBalance: '13.92',
+      mutation: '-7.25',
+      endBalance: '6.67',
+      isValid: true,
+    },
+    {
+      reference: '112806',
+      accountNumber: 'NL93ABNA0585619023',
+      description: 'Subscription from Rik Theu�',
+      startBalance: '77.29',
+      mutation: '-23.99',
+      endBalance: '53.3',
+      isValid: false,
+      validationErrors: ['Record has duplicate reference'],
+    },
+    {
+      reference: '181631',
+      accountNumber: 'NL27SNSB0917829871',
+      description: 'Tickets for Jan King',
+      startBalance: '60.83',
+      mutation: '+41.96',
+      endBalance: '102.79',
+      isValid: true,
+    },
+    {
+      reference: '147132',
+      accountNumber: 'NL56RABO0149876948',
+      description: 'Subscription for Richard Dekker',
+      startBalance: '103.65',
+      mutation: '+2.58',
+      endBalance: '106.23',
+      isValid: true,
+    },
+    {
+      reference: '112806',
+      accountNumber: 'NL91RABO0315273637',
+      description: 'Candy for Willem Theu�',
+      startBalance: '52.21',
+      mutation: '-33.21',
+      endBalance: '19',
+      isValid: false,
+      validationErrors: ['Record has duplicate reference'],
+    },
+    {
+      reference: '112806',
+      accountNumber: 'NL27SNSB0917829871',
+      description: 'Flowers from Erik de Vries',
+      startBalance: '39.9',
+      mutation: '-42.57',
+      endBalance: '-2.67',
+      isValid: false,
+      validationErrors: ['Record has duplicate reference'],
+    },
+    {
+      reference: '134902',
+      accountNumber: 'NL90ABNA0585647886',
+      description: 'Clothes for Willem de Vries',
+      startBalance: '22.2',
+      mutation: '+33.21',
+      endBalance: '55.41',
+      isValid: true,
+    },
+    {
+      reference: '136329',
+      accountNumber: 'NL93ABNA0585619023',
+      description: 'Clothes from Dani�l Bakker',
+      startBalance: '81.7',
+      mutation: '-43.41',
+      endBalance: '38.29',
+      isValid: true,
+    },
+    {
+      reference: '187928',
+      accountNumber: 'NL43AEGO0773393871',
+      description: 'Flowers from Richard Theu�',
+      startBalance: '101.01',
+      mutation: '-30.45',
+      endBalance: '70.56',
+      isValid: true,
+    },
+    {
+      reference: '163434',
+      accountNumber: 'NL90ABNA0585647886',
+      description: 'Flowers from Jan de Vries',
+      startBalance: '71.87',
+      mutation: '-16.05',
+      endBalance: '55.82',
+      isValid: true,
+    },
+  ],
+};

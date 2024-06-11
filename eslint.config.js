@@ -18,6 +18,6 @@ export default tseslint.config(
   },
   {
     // Config with just ignores is the replacement for `.eslintignore`
-    ignores: ['**/build/**', '**/dist/**', '.angular', '.github', '.vscode', 'server.ts'],
+    ignores: ['**/build/**', '**/dist/**', '.angular', '.github', '.vscode'],
   },
 );

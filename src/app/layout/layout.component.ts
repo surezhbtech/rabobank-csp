@@ -130,7 +130,15 @@ export class LayoutComponent implements OnDestroy {
       .subscribe((httpEvent) => {
         if (httpEvent.type === HttpEventType.Response) {
           this.isDataLoading = false;
-          this.statementProcessorService.recordMT940Communicator.next(httpEvent.body as RecordMT940[]);
+          if (httpEvent.body) {
+            if ('message' in httpEvent.body) {
+              this.error = httpEvent.body.message as string;
+            } else {
+              this.statementProcessorService.recordMT940Communicator.next(httpEvent.body as RecordMT940[]);
+            }
+          } else {
+            this.error = 'Invalid file format MT940';
+          }
         }
       });
   };

@@ -13,9 +13,9 @@ import {
   MatTableModule,
 } from '@angular/material/table';
 import { RecordMT940 } from '../app.types';
-import { catchError, EMPTY, Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { StatementProcessorService } from '../services/statement-processor.service';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-report',
@@ -33,6 +33,7 @@ import { NgClass } from '@angular/common';
     MatHeaderRowDef,
     MatRowDef,
     NgClass,
+    NgIf,
   ],
   templateUrl: './report.component.html',
   styleUrl: './report.component.scss',
@@ -47,18 +48,17 @@ export class ReportComponent implements OnDestroy {
     'description',
     'validationErrors',
   ];
-  public dataSource: Observable<RecordMT940[]>;
+  public dataSource: RecordMT940[] = [];
 
   private destroy$ = new Subject<void>();
 
   constructor(private statementProcessorService: StatementProcessorService) {
-    this.dataSource = this.statementProcessorService.recordMT940Communicator.pipe(
-      takeUntil(this.destroy$),
-      catchError((error) => {
-        console.log(error);
-        return EMPTY;
-      }),
-    );
+    this.statementProcessorService.recordMT940Communicator.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (tableData: RecordMT940[]) => {
+        this.dataSource = tableData;
+      },
+      error: (error) => console.error('An error occurred :', error),
+    });
   }
 
   ngOnDestroy() {

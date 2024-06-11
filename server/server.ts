@@ -3,9 +3,10 @@ import { CommonEngine } from '@angular/ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import bootstrap from './src/main.server';
+import bootstrap from '../src/main.server';
 import bodyParser from 'body-parser';
-import { validateStatement } from './server/statement-processor';
+import { validateStatement } from './statement-processor';
+import { Statement } from './processor.types';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -20,9 +21,9 @@ export function app(): express.Express {
   server.set('views', browserDistFolder);
 
   server.post('/upload', bodyParser.text(), function (req, res) {
-    const response = JSON.parse(req.body);
-    console.log(response[0]);
-    res.send(validateStatement(response));
+    const requestBody = JSON.parse(req.body as string) as Statement;
+    console.log(requestBody);
+    res.send(validateStatement(requestBody));
   });
 
   // Serve static files from /browser
@@ -56,7 +57,7 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 80;
+  const port = process.env['PORT'] ?? 80;
 
   // Start up the Node server
   const server = app();

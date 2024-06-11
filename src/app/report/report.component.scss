@@ -2,3 +2,12 @@
   background-color: #ffdad6;
   color: #b03c3c;
 }
+table {
+  overflow-x: auto;
+  display: block;
+}
+@media only screen and (max-width: 600px) {
+  table {
+    white-space: nowrap;
+  }
+}
