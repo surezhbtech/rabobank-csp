@@ -28,11 +28,13 @@ At the end of the processing, a report needs to be created which will display bo
 The application has been deployed to the Azure container service. You can access it using the following link: https://rabobank.azurewebsites.net/
 
 For every commit to the main branch, the GitHub workflow will perform the following actions:
+
 - Compose a container and push it to Docker Hub
 - Pull the container from Docker Hub and deploy it to Azure Container Service
 - Deployment workflow: [main workflow](https://github.com/surezhbtech/rabobank-csp/actions/workflows/main_rabobank.yml)
 
 In addition, the GitHub workflow will also:
+
 - Check for Typescript lint errors
 - Test the code
 - Publish the test [coverage report](https://github.com/surezhbtech/rabobank-csp/actions/workflows/coverage.yml)

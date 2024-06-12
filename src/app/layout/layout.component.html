@@ -1,7 +1,7 @@
 <div class="app-layout">
   <h2>{{ uploadLabel }}:</h2>
 
-  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="app-layout__error" *ngIf="error">{{ error }}</div>
   <div draggable="true" class="app-layout__dragdroparea" ngClass="{{ dragAreaClass }}">
     Drag & Drop to Upload File or
     <button type="button" mat-raised-button (click)="fileInput.click()">{{ uploadButton }}</button>

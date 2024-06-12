@@ -1,5 +1,4 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
-
 import { MatButton } from '@angular/material/button';
 import { XMLParser } from 'fast-xml-parser';
 import { StatementProcessorService } from '../services/statement-processor.service';
@@ -7,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 import { ReportComponent } from '../report/report.component';
 import { RecordMT940 } from '../app.types';
-import { MatProgressBar } from '@angular/material/progress-bar';
+
 
 import csv from 'csvtojson';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
@@ -16,7 +15,7 @@ import { NgClass, NgIf } from '@angular/common';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [MatButton, ReportComponent, MatProgressBar, SkeletonComponent, NgIf, NgClass],
+  imports: [MatButton, ReportComponent, SkeletonComponent, NgIf, NgClass],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
@@ -71,6 +70,7 @@ export class LayoutComponent implements OnDestroy {
   }
 
   processFiles(files: FileList) {
+    this.statementProcessorService.recordMT940Communicator.next([]);
     if (files.length > 1) {
       this.error = 'Only one file at time allow';
     } else {
@@ -97,6 +97,7 @@ export class LayoutComponent implements OnDestroy {
     } else if (fileExtension === 'csv') {
       await this.processCSV(uploadContent);
     } else {
+      this.isDataLoading = false;
       this.error = 'Invalid File Format!';
     }
   }
@@ -105,6 +106,7 @@ export class LayoutComponent implements OnDestroy {
     try {
       this.sendDataToCommunicator(JSON.stringify(this.xmlParser.parse(uploadContent)));
     } catch (error) {
+      this.isDataLoading = false;
       this.error = 'Failed to parse XML file';
       console.log(error);
     }
@@ -118,6 +120,7 @@ export class LayoutComponent implements OnDestroy {
       }).fromString(uploadContent);
       this.sendDataToCommunicator(JSON.stringify(jsonContent));
     } catch (error) {
+      this.isDataLoading = false;
       this.error = 'Failed to parse CSV file';
       console.log(error);
     }

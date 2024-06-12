@@ -5,6 +5,10 @@
   top: 100px;
   position: relative;
   max-width: 1080px;
+  &__error {
+    margin-bottom: 16px;
+    color: #f00;
+  }
   &__dragdroparea {
     text-align: center;
     margin: 0 0 32px 0;
@@ -22,10 +26,6 @@
   button {
     margin: 0 4px;
   }
-}
-
-.error {
-  color: #f00;
 }
 
 .drag {
